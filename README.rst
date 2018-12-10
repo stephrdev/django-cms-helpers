@@ -17,19 +17,21 @@ django-cms-helpers
    :target: https://travis-ci.org/lenarother/django-cms-helpers
 
 
-TODO: Explain what your library does in one or two sentences.
+django-cms-helpers is a collection of helpers when working with django-cms.
 
 
 Features
 --------
 
-* TODO: Provide a list of the main features of your library
-
+* templatetag for getting title extension object.
+* anylink extension for cms pages.
+* boilerplate code for ExtensionToolbar.
+* FilerFileField extension to validate file extension and make default_alt_text required.
 
 Requirements
 ------------
 
-django-cms-helpers supports Python 3 only and requires at least Django 1.11.
+django-cms-helpers supports Python 3 only and requires at least Django 1.11 and django-cms at least 3.4.
 
 
 Prepare for development

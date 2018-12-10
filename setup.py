@@ -15,7 +15,7 @@ with open(os.path.join(BASE_DIR, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='django-cms-helpers',
     version=VERSION,
-    description='TODO: Explain what your libraries does.',
+    description='django-cms-helpers is a collection of helpers when working with django-cms.',
     long_description=long_description,
     url='https://github.com/lenarother/django-cms-helpers',
     project_urls={

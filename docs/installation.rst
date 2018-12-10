@@ -10,8 +10,18 @@ Installation
 
     INSTALLED_APPS = (
         # ...
+        'anylink',
+        'cms',
+        'filer',
+
         'cms_helpers',
     )
 
 
-TODO: Add additional installation steps.
+* To use ``CmsPageLink`` anylink extension add to your settings::
+
+    ANYLINK_EXTENSIONS = (
+        # ...
+
+        'cms_helpers.anylink_extensions.CmsPageLink',
+    )
