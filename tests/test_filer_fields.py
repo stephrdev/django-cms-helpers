@@ -4,6 +4,7 @@ from django import forms
 from filer.models import Image
 
 from cms_helpers.filer_fields import AdminFileFormField
+from tests.resources.cmsapp.models import FileModel
 
 from .factories import ImageFactory
 
@@ -62,3 +63,19 @@ class TestAdminFileFormField:
 
         with pytest.raises(forms.ValidationError):
             field.clean(str(image.pk))
+
+
+class TestFilerFileField:
+
+    def test_formfield(self):
+        form_class = forms.models.modelform_factory(FileModel, fields='__all__')
+        assert isinstance(form_class().fields['file1'], AdminFileFormField)
+
+    @pytest.mark.django_db
+    def test_blank_null(self):
+        assert FileModel._meta.get_field('file1').blank is True
+        assert FileModel._meta.get_field('file1').null is True
+        assert FileModel._meta.get_field('file2').blank is True
+        assert FileModel._meta.get_field('file2').null is True
+        assert FileModel._meta.get_field('file3').blank is False
+        assert FileModel._meta.get_field('file3').null is False
