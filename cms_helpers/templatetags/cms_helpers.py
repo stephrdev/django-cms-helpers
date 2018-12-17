@@ -1,5 +1,6 @@
 from cms.models import Page
 from cms.utils.moderator import use_draft
+
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
 
