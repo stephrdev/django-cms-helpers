@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 
 DEBUG = True
@@ -79,3 +80,6 @@ CMS_TOOLBARS = [
 
 ROOT_URLCONF = 'tests.urls'
 CMS_TEMPLATES = (('empty_template.html', 'empty'),)
+
+MEDIA_ROOT = tempfile.mkdtemp()
+MEDIA_URL = '/media/'
