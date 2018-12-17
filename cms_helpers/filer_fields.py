@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import os
 
 from filer.fields.file import AdminFileFormField as BaseAdminFileFormField
