@@ -13,12 +13,13 @@ pytest-cov = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 factory-boy = "*"
+tox = "*"
 
 [packages]
 django = "~=1.11"
 django-filer = "~=1.3"
 django-anylink = "*"
-django-cms = "~=3.4"
+django-cms = "*"
 
 [requires]
 python_version = "3.6"

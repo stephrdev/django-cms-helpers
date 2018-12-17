@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from anylink.extensions import BaseLink
 from cms.models.fields import PageField
 from cms.utils.conf import get_cms_setting
+
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
