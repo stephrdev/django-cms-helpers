@@ -11,18 +11,18 @@ from tests.resources.cmsapp.models import ExtensionModel
 @pytest.mark.django_db
 class TestPageTitleExtensionTemplateTag:
 
-    @mock.patch('cms_helpers.templatetags.page_titleextension.Page.objects.get')
+    @mock.patch('cms_helpers.templatetags.cms_helpers.Page.objects.get')
     def test_no_cms(self, page_mock, rf):
         page_mock.side_effect = NameError
         template = Template(
-            '{% load page_titleextension %}{% page_titleextension 1 "extensionmodel" %}')
+            '{% load cms_helpers %}{% page_titleextension 1 "extensionmodel" %}')
         context = Context({'request': rf.get('/')})
         with pytest.raises(ImportError):
             assert template.render(context) == ''
 
     def test_page_not_found(self, rf):
         template = Template(
-            '{% load page_titleextension %}{% page_titleextension 1 "extensionmodel" %}')
+            '{% load cms_helpers %}{% page_titleextension 1 "extensionmodel" %}')
         context = Context({'request': rf.get('/')})
         assert template.render(context) == 'None'
 
@@ -31,7 +31,7 @@ class TestPageTitleExtensionTemplateTag:
         request.user = User()
         page = create_page('Test Page', 'INHERIT', 'en-us')
         template = Template((
-            '{%% load page_titleextension %%}'
+            '{%% load cms_helpers %%}'
             '{%% page_titleextension %s "extensionmodel" %%}'
         ) % page.pk)
         context = Context({'request': request})
@@ -46,7 +46,7 @@ class TestPageTitleExtensionTemplateTag:
         page.refresh_from_db()
 
         template = Template((
-            '{%% load page_titleextension %%}'
+            '{%% load cms_helpers %%}'
             '{%% page_titleextension %s "extensionmodel" %%}'
         ) % page.pk)
         context = Context({'request': request})
@@ -66,7 +66,7 @@ class TestPageTitleExtensionTemplateTag:
             extended_object=page.get_draft_object().get_title_obj(), name='draft')
 
         template = Template((
-            '{%% load page_titleextension %%}'
+            '{%% load cms_helpers %%}'
             '{%% page_titleextension %s "extensionmodel" %%}'
         ) % page.pk)
         context = Context({'request': request})
@@ -87,7 +87,7 @@ class TestPageTitleExtensionTemplateTag:
             extended_object=page.get_draft_object().get_title_obj(), name='draft')
 
         template = Template((
-            '{%% load page_titleextension %%}'
+            '{%% load cms_helpers %%}'
             '{%% page_titleextension %s "extensionmodel" %%}'
         ) % page.pk)
         context = Context({'request': request})
