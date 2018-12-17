@@ -2,17 +2,18 @@ from __future__ import absolute_import
 
 import os
 
-from django import forms
-from django.utils.translation import ugettext
 from filer.fields.file import AdminFileFormField as BaseAdminFileFormField
 from filer.fields.file import FilerFileField as BaseFilerFileField
+
+from django import forms
+from django.utils.translation import ugettext
 
 
 class AdminFileFormField(BaseAdminFileFormField):
     def __init__(self, *args, **kwargs):
         self.extensions = kwargs.pop('extensions', None)
         self.alt_text_required = kwargs.pop('alt_text_required', True)
-        super(AdminFileFormField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean(self, value):
         cleaned = super(AdminFileFormField, self).clean(value)
@@ -49,7 +50,7 @@ class FilerFileField(BaseFilerFileField):
         self.extensions = kwargs.pop('extensions', None)
         self.alt_text_required = kwargs.pop('alt_text_required', True)
 
-        super(FilerFileField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def formfield(self, **kwargs):
         defaults = {
@@ -57,4 +58,4 @@ class FilerFileField(BaseFilerFileField):
             'alt_text_required': self.alt_text_required,
         }
         defaults.update(kwargs)
-        return super(FilerFileField, self).formfield(**defaults)
+        return super().formfield(**defaults)

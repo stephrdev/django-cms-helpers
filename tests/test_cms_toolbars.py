@@ -1,4 +1,5 @@
-import mock
+from unittest import mock
+
 from cms.api import create_page
 from cms.toolbar.items import ModalItem
 
