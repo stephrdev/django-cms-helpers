@@ -49,20 +49,18 @@ of the extension in the menu through insert_after parameter.
     from cms_helpers.cms_toolbars import TitleExtensionToolbar
 
 
+    @extension_pool.register
     class YourExtensionModel(TitleExtension):
         name = models.CharField(max_length=255)
 
         class Meta:
             verbose_name = 'yourExtension'
 
-    extension_pool.register(ExtensionModel)
 
-
+    @toolbar_pool.register
     class ExtensionToolbar(TitleExtensionToolbar):
         model = YourExtensionModel
         insert_after = 'Advanced settings'
-
-    toolbar_pool.register(ExtensionToolbar)
 
 
 filer field extension

@@ -5,8 +5,7 @@ from cms_helpers.cms_toolbars import TitleExtensionToolbar
 from .models import ExtensionModel
 
 
+@toolbar_pool.register
 class ExtensionToolbar(TitleExtensionToolbar):
     model = ExtensionModel
     insert_after = 'Advanced settings'
-
-toolbar_pool.register(ExtensionToolbar)
