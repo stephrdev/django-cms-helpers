@@ -15,7 +15,8 @@ from django.core.cache import cache
 class TestCmsPageLink:
     def setup(self):
         cache.clear()
-        self.root = create_page('Root Page', 'INHERIT', 'en-us')
+        # self.root = create_page('Root page', 'INHERIT', 'en-us')
+        self.root = create_page('', 'INHERIT', 'en-us')
         self.page = create_page('Sub page', 'INHERIT', 'en-us', parent=self.root)
 
     def test_get_absolute_url(self):
@@ -23,7 +24,7 @@ class TestCmsPageLink:
 
         url = CmsPageLink().get_absolute_url(link)
 
-        assert url == '/root-page/sub-page/'
+        assert url == '/sub-page/'
 
     def test_get_absolute_url_with_other_domain(self):
         second_site = Site.objects.create(
@@ -34,24 +35,24 @@ class TestCmsPageLink:
 
         url = CmsPageLink().get_absolute_url(link)
 
-        assert url == '//second.domain.local/root-page/sub-page-2/'
+        assert url == '//second.domain.local/sub-page-2/'
 
     def test_get_absolute_url_cache_hit(self):
         link = AnyLink(link_type='page', page=self.page)
 
         url = CmsPageLink().get_absolute_url(link)
-        assert url == '/root-page/sub-page/'
+        assert url == '/sub-page/'
 
         with mock.patch('cms.models.Page.get_absolute_url') as url_mock:
             url_mock.return_value = '/not-cached/'
 
             url = CmsPageLink().get_absolute_url(link)
             assert url_mock.called is False
-            assert url == '/root-page/sub-page/'
+            assert url == '/sub-page/'
 
     def test_get_absolute_url_with_anchor(self):
         link = AnyLink(link_type='page', page=self.page, anchor='section')
 
         url = CmsPageLink().get_absolute_url(link)
 
-        assert url == '/root-page/sub-page/#section'
+        assert url == '/sub-page/#section'
