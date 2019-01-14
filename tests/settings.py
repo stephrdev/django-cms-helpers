@@ -23,9 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'menus',
-    'mptt',
     'cms',
-    'easy_thumbnails',
     'treebeard',
 
     'cms_helpers',
@@ -88,6 +86,10 @@ except ImportError:
 
 try:
     import filer  # noqa
-    INSTALLED_APPS += ['filer']
+    INSTALLED_APPS += [
+        'mptt',
+        'easy_thumbnails',
+        'filer'
+    ]
 except ImportError:
     pass

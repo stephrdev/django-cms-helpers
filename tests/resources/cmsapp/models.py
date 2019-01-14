@@ -1,8 +1,12 @@
 from cms.extensions import TitleExtension
 from cms.extensions.extension_pool import extension_pool
-
-from cms_helpers.filer_fields import FilerFileField
 from django.db import models
+
+
+try:
+    from cms_helpers.filer_fields import FilerFileField
+except ImportError:
+    FilerFileField = None
 
 
 @extension_pool.register
@@ -16,7 +20,8 @@ class ExtensionModel(TitleExtension):
         return self.name
 
 
-class FileModel(models.Model):
-        file1 = FilerFileField(null=True)
-        file2 = FilerFileField(blank=True)
-        file3 = FilerFileField()
+if FilerFileField:
+    class FileModel(models.Model):
+            file1 = FilerFileField(null=True)
+            file2 = FilerFileField(blank=True)
+            file3 = FilerFileField()

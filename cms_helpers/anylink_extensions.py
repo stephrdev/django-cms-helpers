@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 from cms.models.fields import PageField
 from cms.utils.conf import get_cms_setting
-
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
@@ -10,11 +9,7 @@ from django.utils.six.moves.urllib import parse as urlparse
 from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
 
-
-try:
-    from anylink.extensions import BaseLink
-except ImportError:
-    pass
+from anylink.extensions import BaseLink
 
 
 class CmsPageLink(BaseLink):

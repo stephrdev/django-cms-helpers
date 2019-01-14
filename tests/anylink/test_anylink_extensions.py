@@ -8,20 +8,14 @@ from cms.api import create_page
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 
-
-try:
-    from anylink.models import AnyLink
-    from cms_helpers.anylink_extensions import CmsPageLink
-except ImportError:
-    pass
+from anylink.models import AnyLink
+from cms_helpers.anylink_extensions import CmsPageLink
 
 
-@pytest.mark.anylink
 @pytest.mark.django_db
 class TestCmsPageLink:
     def setup(self):
         cache.clear()
-        # self.root = create_page('Root page', 'INHERIT', 'en-us')
         self.root = create_page('', 'INHERIT', 'en-us')
         self.page = create_page('Sub page', 'INHERIT', 'en-us', parent=self.root)
 
