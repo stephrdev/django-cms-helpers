@@ -1,10 +1,14 @@
 import os
 
-from filer.fields.file import AdminFileFormField as BaseAdminFileFormField
-from filer.fields.file import FilerFileField as BaseFilerFileField
-
 from django import forms
 from django.utils.translation import ugettext
+
+
+try:
+    from filer.fields.file import AdminFileFormField as BaseAdminFileFormField
+    from filer.fields.file import FilerFileField as BaseFilerFileField
+except ImportError:
+    pass
 
 
 class AdminFileFormField(BaseAdminFileFormField):

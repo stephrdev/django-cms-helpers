@@ -25,7 +25,7 @@ setup(
     author='moccu',
     author_email='magdalena.rother@moccu.com',
     packages=find_packages(exclude=['tests', 'tests.*']),
-    install_requires=[],
+    install_requires=['django-cms'],
     include_package_data=True,
     keywords='django',
     classifiers=[

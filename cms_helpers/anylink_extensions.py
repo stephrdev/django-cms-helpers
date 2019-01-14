@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-from anylink.extensions import BaseLink
 from cms.models.fields import PageField
 from cms.utils.conf import get_cms_setting
 
@@ -10,6 +9,12 @@ from django.db import models
 from django.utils.six.moves.urllib import parse as urlparse
 from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
+
+
+try:
+    from anylink.extensions import BaseLink
+except ImportError:
+    pass
 
 
 class CmsPageLink(BaseLink):
@@ -29,9 +34,9 @@ class CmsPageLink(BaseLink):
 
         url = cache.get(cache_key)
         if url is None:
-            if settings.SITE_ID != link.page.node.site_id:
+            if settings.SITE_ID != link.page.site_id:
                 url = '//{domain}{url}'.format(
-                    domain=link.page.node.site.domain,
+                    domain=link.page.site.domain,
                     url=link.page.get_absolute_url()
                 )
             else:

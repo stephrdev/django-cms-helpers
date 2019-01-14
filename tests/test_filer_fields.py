@@ -10,6 +10,7 @@ from tests.resources.cmsapp.models import FileModel
 from .factories import ImageFactory
 
 
+@pytest.mark.filer
 @pytest.mark.django_db
 class TestAdminFileFormField:
     def test_super_not_clean(self):
@@ -66,6 +67,7 @@ class TestAdminFileFormField:
             field.clean(str(image.pk))
 
 
+@pytest.mark.filer
 class TestFilerFileField:
 
     def test_formfield(self):

@@ -23,11 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'menus',
-    'anylink',
     'mptt',
     'cms',
     'easy_thumbnails',
-    'filer',
     'treebeard',
 
     'cms_helpers',
@@ -38,12 +36,6 @@ TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'APP_DIRS': True,
 }]
-
-
-ANYLINK_EXTENSIONS = (
-    'anylink.extensions.ExternalLink',
-    'cms_helpers.anylink_extensions.CmsPageLink',
-)
 
 SITE_ID = 1
 LANGUAGES = (('en-us', 'en-us'),)
@@ -83,3 +75,19 @@ CMS_TEMPLATES = (('empty_template.html', 'empty'),)
 
 MEDIA_ROOT = tempfile.mkdtemp()
 MEDIA_URL = '/media/'
+
+try:
+    import anylink  # noqa
+    INSTALLED_APPS += ['anylink']
+    ANYLINK_EXTENSIONS = (
+        'anylink.extensions.ExternalLink',
+        'cms_helpers.anylink_extensions.CmsPageLink',
+    )
+except ImportError:
+    pass
+
+try:
+    import filer  # noqa
+    INSTALLED_APPS += ['filer']
+except ImportError:
+    pass
