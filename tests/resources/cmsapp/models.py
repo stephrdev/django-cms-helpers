@@ -1,5 +1,6 @@
 from cms.extensions import TitleExtension
 from cms.extensions.extension_pool import extension_pool
+
 from django.db import models
 
 
