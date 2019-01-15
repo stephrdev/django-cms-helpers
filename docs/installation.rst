@@ -26,7 +26,6 @@ Installation
 
     ANYLINK_EXTENSIONS = (
         # ...
-
         'cms_helpers.anylink_extensions.CmsPageLink',
     )
 
