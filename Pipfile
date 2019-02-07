@@ -5,7 +5,6 @@ name = "pypi"
 
 [dev-packages]
 pytest = "*"
-"pytest-pep8" = "*"
 pytest-flakes = "*"
 pytest-isort = "*"
 pytest-django = "*"
@@ -14,6 +13,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 factory-boy = "*"
 tox = "*"
+pytest-pycodestyle = "*"
 
 [packages]
 django = "~=1.11"
