@@ -5,16 +5,16 @@ django-cms-helpers
    :target: https://pypi.org/project/django-cms-helpers/
    :alt: Latest Version
 
-.. image:: https://codecov.io/gh/lenarother/django-cms-helpers/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/lenarother/django-cms-helpers
+.. image:: https://codecov.io/gh/moccu/django-cms-helpers/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/moccu/django-cms-helpers
    :alt: Coverage Status
 
 .. image:: https://readthedocs.org/projects/django-cms-helpers/badge/?version=latest
    :target: https://django-cms-helpers.readthedocs.io/en/stable/?badge=latest
    :alt: Documentation Status
 
-.. image:: https://travis-ci.org/lenarother/django-cms-helpers.svg?branch=master
-   :target: https://travis-ci.org/lenarother/django-cms-helpers
+.. image:: https://travis-ci.org/moccu/django-cms-helpers.svg?branch=master
+   :target: https://travis-ci.org/moccu/django-cms-helpers
 
 
 django-cms-helpers is a collection of helpers when working with django-cms.
@@ -57,5 +57,5 @@ Resources
 ---------
 
 * `Documentation <https://django-cms-helpers.readthedocs.io>`_
-* `Bug Tracker <https://github.com/lenarother/django-cms-helpers/issues>`_
-* `Code <https://github.com/lenarother/django-cms-helpers/>`_
+* `Bug Tracker <https://github.com/moccu/django-cms-helpers/issues>`_
+* `Code <https://github.com/moccu/django-cms-helpers/>`_
