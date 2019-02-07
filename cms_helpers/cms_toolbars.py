@@ -1,5 +1,4 @@
 from cms.extensions.toolbar import ExtensionToolbar
-
 from django.utils.encoding import force_text
 
 

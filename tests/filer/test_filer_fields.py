@@ -1,10 +1,10 @@
 from unittest import mock
 
 import pytest
+from django import forms
 from filer.models import Image
 
 from cms_helpers.filer_fields import AdminFileFormField
-from django import forms
 from tests.resources.cmsapp.models import FileModel
 
 from .factories import ImageFactory

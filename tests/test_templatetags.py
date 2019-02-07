@@ -2,9 +2,9 @@ from unittest import mock
 
 import pytest
 from cms.api import create_page, publish_page
-
 from django.contrib.auth.models import User
 from django.template import Context, Template
+
 from tests.resources.cmsapp.models import ExtensionModel
 
 

@@ -5,10 +5,10 @@ from unittest import mock
 import pytest
 from anylink.models import AnyLink
 from cms.api import create_page
-
-from cms_helpers.anylink_extensions import CmsPageLink
 from django.contrib.sites.models import Site
 from django.core.cache import cache
+
+from cms_helpers.anylink_extensions import CmsPageLink
 
 
 @pytest.mark.django_db
