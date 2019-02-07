@@ -9,6 +9,15 @@ clean:
 tests:
 	pipenv run py.test --cov
 
+tests_base:
+	py.test --cov --ignore=tests/anylink --ignore=tests/filer
+
+tests_anylink:
+	py.test --cov --ignore=tests/filer
+
+tests_filer:
+	py.test --cov --ignore=tests/anylink
+
 cov: tests
 	pipenv run coverage html
 	@echo open htmlcov/index.html

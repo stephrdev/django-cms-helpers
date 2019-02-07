@@ -5,16 +5,19 @@ name = "pypi"
 
 [dev-packages]
 pytest = "*"
-"pytest-pep8" = "*"
 pytest-flakes = "*"
 pytest-isort = "*"
 pytest-django = "*"
 pytest-cov = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+factory-boy = "*"
+tox = "*"
+pytest-pycodestyle = "*"
 
 [packages]
-django = "*"
+django = "~=1.11"
+django-cms = "*"
 
 [requires]
 python_version = "3.6"
