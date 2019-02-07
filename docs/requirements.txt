@@ -1,1 +1,3 @@
 Django>=1.11
+django-anylink>=1.0.0
+django-filer>=1.4.4
