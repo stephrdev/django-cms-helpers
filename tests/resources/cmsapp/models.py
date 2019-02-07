@@ -23,6 +23,6 @@ class ExtensionModel(TitleExtension):
 
 if FilerFileField:
     class FileModel(models.Model):
-            file1 = FilerFileField(null=True)
-            file2 = FilerFileField(blank=True)
-            file3 = FilerFileField()
+        file1 = FilerFileField(null=True)
+        file2 = FilerFileField(blank=True)
+        file3 = FilerFileField()
