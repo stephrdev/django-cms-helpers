@@ -1,3 +1,4 @@
-Django>=1.11
-django-anylink>=1.0.0
-django-filer>=1.4.4
+Django~=1.11
+django-cms~=3.6.0
+django-anylink~=1.0.0
+django-filer~=.4.4
