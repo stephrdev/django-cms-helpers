@@ -11,7 +11,7 @@ and name of extension model.
 
 .. code-block:: text
 
-    {% load page_titleextension %}
+    {% load cms_helpers %}
 
     {% page_titleextension 1 "extensionmodel" %}
 
