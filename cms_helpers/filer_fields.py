@@ -49,6 +49,8 @@ class FilerFileField(BaseFilerFileField):
         self.extensions = kwargs.pop('extensions', None)
         self.alt_text_required = kwargs.pop('alt_text_required', True)
 
+        super().__init__(*args, **kwargs)
+
     def formfield(self, **kwargs):
         defaults = {
             'extensions': self.extensions,
