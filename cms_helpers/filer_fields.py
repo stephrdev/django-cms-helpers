@@ -44,14 +44,10 @@ class FilerFileField(BaseFilerFileField):
         if kwargs.pop('blank', False) or kwargs.pop('null', False):
             kwargs['null'] = True
             kwargs['blank'] = True
+        kwargs.setdefault('on_delete', models.CASCADE)
 
         self.extensions = kwargs.pop('extensions', None)
         self.alt_text_required = kwargs.pop('alt_text_required', True)
-
-        try:
-            super().__init__(*args, **kwargs)
-        except TypeError:
-            super().__init__(on_delete=models.CASCADE, *args, **kwargs)
 
     def formfield(self, **kwargs):
         defaults = {
