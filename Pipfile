@@ -16,8 +16,8 @@ tox = "*"
 pytest-pycodestyle = "*"
 
 [packages]
-django = "~=1.11"
 django-cms = "*"
+django = "*"
 
 [requires]
 python_version = "3.6"
