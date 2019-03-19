@@ -26,18 +26,18 @@ class TestCmsPageLink:
 
         assert url == '/sub-page/'
 
+    @pytest.mark.skipif(int(cms.__version__.split('.')[1]) < 6,
+        reason='django-cms3.6 dropped page support')
     def test_get_absolute_url_with_other_domain(self):
-        # django-cms3.6 dropped page support
-        if int(cms.__version__.split('.')[1]) < 6:
-            second_site = Site.objects.create(
-                domain='second.domain.local', name='second.domain.local')
-            second_site_page = create_page(
-                'Sub page 2', 'INHERIT', 'en-us', parent=self.root, site=second_site)
-            link = AnyLink(link_type='page', page=second_site_page)
+        second_site = Site.objects.create(
+            domain='second.domain.local', name='second.domain.local')
+        second_site_page = create_page(
+            'Sub page 2', 'INHERIT', 'en-us', parent=self.root, site=second_site)
+        link = AnyLink(link_type='page', page=second_site_page)
 
-            url = CmsPageLink().get_absolute_url(link)
+        url = CmsPageLink().get_absolute_url(link)
 
-            assert url == '//second.domain.local/sub-page-2/'
+        assert url == '//second.domain.local/sub-page-2/'
 
     def test_get_absolute_url_cache_hit(self):
         link = AnyLink(link_type='page', page=self.page)
