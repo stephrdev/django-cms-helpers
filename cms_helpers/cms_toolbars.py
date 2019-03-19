@@ -28,10 +28,10 @@ class TitleExtensionToolbar(ExtensionToolbar):
 
         urls = self.get_title_extension_admin()
 
-        try:
-            not_edit_mode = not self.toolbar.edit_mode
-        except AttributeError:
+        if hasattr(self.toolbar, 'edit_mode_active'):
             not_edit_mode = not self.toolbar.edit_mode_active
+        else:
+            not_edit_mode = not self.toolbar.edit_mode
 
         for title_extension, url in urls:
             current_page_menu.add_modal_item(
