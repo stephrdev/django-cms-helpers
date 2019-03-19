@@ -27,9 +27,15 @@ class TitleExtensionToolbar(ExtensionToolbar):
         position = self.get_item_position(current_page_menu)
 
         urls = self.get_title_extension_admin()
+
+        try:
+            not_edit_mode = not self.toolbar.edit_mode
+        except AttributeError:
+            not_edit_mode = not self.toolbar.edit_mode_active
+
         for title_extension, url in urls:
             current_page_menu.add_modal_item(
                 self.model._meta.verbose_name,
                 url=url, position=position,
-                disabled=not self.toolbar.edit_mode
+                disabled=not_edit_mode,
             )

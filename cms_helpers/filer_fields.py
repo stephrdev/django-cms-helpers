@@ -1,6 +1,7 @@
 import os
 
 from django import forms
+from django.db import models
 from django.utils.translation import ugettext
 from filer.fields.file import AdminFileFormField as BaseAdminFileFormField
 from filer.fields.file import FilerFileField as BaseFilerFileField
@@ -47,7 +48,10 @@ class FilerFileField(BaseFilerFileField):
         self.extensions = kwargs.pop('extensions', None)
         self.alt_text_required = kwargs.pop('alt_text_required', True)
 
-        super().__init__(*args, **kwargs)
+        try:
+            super().__init__(*args, **kwargs)
+        except TypeError:
+            super().__init__(on_delete=models.CASCADE, *args, **kwargs)
 
     def formfield(self, **kwargs):
         defaults = {
