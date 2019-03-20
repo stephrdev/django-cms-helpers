@@ -26,7 +26,7 @@ class CmsPageLink(BaseLink):
 
         url = cache.get(cache_key)
         if url is None:
-            if settings.SITE_ID != link.page.site_id:
+            if hasattr(link.page, 'site_id') and settings.SITE_ID != link.page.site_id:
                 url = '//{domain}{url}'.format(
                     domain=link.page.site.domain,
                     url=link.page.get_absolute_url()

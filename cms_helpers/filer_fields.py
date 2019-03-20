@@ -1,6 +1,7 @@
 import os
 
 from django import forms
+from django.db import models
 from django.utils.translation import ugettext
 from filer.fields.file import AdminFileFormField as BaseAdminFileFormField
 from filer.fields.file import FilerFileField as BaseFilerFileField
@@ -43,6 +44,7 @@ class FilerFileField(BaseFilerFileField):
         if kwargs.pop('blank', False) or kwargs.pop('null', False):
             kwargs['null'] = True
             kwargs['blank'] = True
+        kwargs.setdefault('on_delete', models.CASCADE)
 
         self.extensions = kwargs.pop('extensions', None)
         self.alt_text_required = kwargs.pop('alt_text_required', True)
