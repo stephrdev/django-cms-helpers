@@ -12,8 +12,8 @@ from django.core.cache import cache
 from cms_helpers.anylink_extensions import CmsPageLink
 
 
-newcms = pytest.mark.skipif(
-    int(cms.__version__.split('.')[1]) >= 6,
+pre_djangocms36 = pytest.mark.skipif(
+    cms.__version__.split('.')[:2] >= ['3', '6'],
     reason='django-cms3.6 dropped page support')
 
 
@@ -31,7 +31,7 @@ class TestCmsPageLink:
 
         assert url == '/sub-page/'
 
-    @newcms
+    @pre_djangocms36
     def test_get_absolute_url_with_other_domain(self):
         second_site = Site.objects.create(
             domain='second.domain.local', name='second.domain.local')
