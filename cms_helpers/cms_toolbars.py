@@ -1,5 +1,7 @@
 from cms.extensions.toolbar import ExtensionToolbar
+from cms.utils import get_language_list
 from django.utils.encoding import force_text
+from django.utils.translation import get_language_info
 
 
 class TitleExtensionToolbar(ExtensionToolbar):
@@ -24,18 +26,32 @@ class TitleExtensionToolbar(ExtensionToolbar):
         if not current_page_menu or not self.page:
             return
 
+        languages = get_language_list(self.current_site.id)
+        is_single_lang = len(languages) < 2
         position = self.get_item_position(current_page_menu)
-
         urls = self.get_title_extension_admin()
+        page = self._get_page()
+        titleset = page.title_set.filter(language__in=languages)
 
         if hasattr(self.toolbar, 'edit_mode_active'):
             not_edit_mode = not self.toolbar.edit_mode_active
         else:
             not_edit_mode = not self.toolbar.edit_mode
 
-        for title_extension, url in urls:
-            current_page_menu.add_modal_item(
-                self.model._meta.verbose_name,
-                url=url, position=position,
-                disabled=not_edit_mode,
-            )
+        extended_menu = current_page_menu if is_single_lang else (
+            current_page_menu.get_or_create_menu(
+                key='{0}_menu'.format(self.model._meta.db_table),
+                verbose_name=self.model._meta.verbose_name,
+                position=position, disabled=not_edit_mode))
+
+        nodes = [(title_extension, url, title) for (
+            (title_extension, url), title) in zip(urls, titleset)]
+
+        for title_extension, url, title in nodes:
+            item_position = position if is_single_lang else None
+            language_str = get_language_info(title.language)['name_translated']
+            name = '{0}{1}'.format(
+                '' if is_single_lang else (language_str + ' '),
+                self.model._meta.verbose_name)
+            extended_menu.add_modal_item(
+                name, url=url, disabled=not_edit_mode, position=item_position)
