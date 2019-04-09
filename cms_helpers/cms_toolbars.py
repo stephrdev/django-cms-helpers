@@ -26,7 +26,7 @@ class TitleExtensionToolbar(ExtensionToolbar):
         if not current_page_menu or not self.page:
             return
 
-        languages = get_language_list(self.current_site.id)
+        languages = get_language_list(self.current_site.pk)
         is_single_lang = len(languages) < 2
         position = self.get_item_position(current_page_menu)
         urls = self.get_title_extension_admin()
