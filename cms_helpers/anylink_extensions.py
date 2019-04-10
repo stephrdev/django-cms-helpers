@@ -31,6 +31,11 @@ class CmsPageLink(BaseLink):
                     domain=link.page.site.domain,
                     url=link.page.get_absolute_url()
                 )
+            elif hasattr(link.page, 'node') and settings.SITE_ID != link.page.node.site_id:
+                url = '//{domain}{url}'.format(
+                    domain=link.page.node.site.domain,
+                    url=link.page.get_absolute_url()
+                )
             else:
                 url = link.page.get_absolute_url()
 
