@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.1 (2019-04-30)
+0.2.0 (2019-04-30)
 ------------------
 
 * Add support for many languages to TitleExtensionToolbar
