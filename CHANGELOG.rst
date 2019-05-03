@@ -4,8 +4,8 @@ Changelog
 0.2.0 (2019-04-30)
 ------------------
 
-* Add support for many languages to TitleExtensionToolbar
-* Add back support for multi-domain links in django-cms 3.6
+* Add support for multiple languages to TitleExtensionToolbar
+* Fix support for multi-domain links in django-cms 3.6
 
 
 0.1.0 (2019-03-20)
