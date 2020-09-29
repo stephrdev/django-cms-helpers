@@ -11,22 +11,36 @@ from django.utils.translation import get_language
 register = template.Library()
 
 NO_EXTENSION = 'no_extension'
+CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE = 'CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE'
+
+
+def is_caching_desired(do_cache):
+    if do_cache is not None:
+        return do_cache
+    custom_setting = getattr(settings, CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE, None)
+    if custom_setting is not None:
+        return custom_setting
+    return get_cms_setting('PLUGIN_CACHE')
 
 
 @register.simple_tag(takes_context=True)
-def page_titleextension(context, page_id, extension):
+def page_titleextension(context, page_id, extension, do_cache=None):
+    do_cache = is_caching_desired(do_cache=do_cache)
     request = context.get('request')
     is_draft = request and hasattr(request, 'user') and use_draft(request)
-    lang = get_language()
-    site_id = settings.SITE_ID
-    page_cache_key = _get_cache_key('page_titleextension', page_id, lang, site_id)
-    cache_key = '{}_{}_{}'.format(page_cache_key, is_draft, extension)
 
-    cached = cache.get(cache_key)
-    if cached:
-        if cached == NO_EXTENSION:
-            return None
-        return cached
+    if do_cache:
+        lang = get_language()
+        site_id = settings.SITE_ID
+        cache_duration = get_cms_setting('CACHE_DURATIONS')['content']
+        page_cache_key = _get_cache_key('page_titleextension', page_id, lang, site_id)
+        cache_key = '{}_{}_{}'.format(page_cache_key, is_draft, extension)
+
+        cached = cache.get(cache_key)
+        if cached:
+            if cached == NO_EXTENSION:
+                return None
+            return cached
 
     try:
         page = Page.objects.get(pk=page_id)
@@ -46,8 +60,10 @@ def page_titleextension(context, page_id, extension):
     try:
         title_extension = getattr(page.get_title_obj(), extension)
     except ObjectDoesNotExist:
-        cache.set(cache_key, NO_EXTENSION, get_cms_setting('CACHE_DURATIONS')['content'])
+        if do_cache:
+            cache.set(cache_key, NO_EXTENSION, timeout=cache_duration)
         return None
     else:
-        cache.set(cache_key, title_extension, get_cms_setting('CACHE_DURATIONS')['content'])
+        if do_cache:
+            cache.set(cache_key, title_extension, timeout=cache_duration)
         return title_extension

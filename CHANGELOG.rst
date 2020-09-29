@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.0
+-----
+
+* Add caching for page_titleextension template tag
+
 0.2.0 (2019-04-30)
 ------------------
 

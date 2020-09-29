@@ -85,3 +85,5 @@ try:
     ]
 except ImportError:
     pass
+
+CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE = True

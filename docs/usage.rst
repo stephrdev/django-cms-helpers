@@ -16,6 +16,19 @@ and name of extension model.
     {% page_titleextension 1 "extensionmodel" %}
 
 
+The page_titleextension templatetag is cached by default if
+`CMS_PLUGIN_CACHE` is True, which is the default. You can override
+globally by setting `CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE = False`.
+You can also override locally the template tag using the `do_cache`
+keyword argument.
+
+
+.. code-block:: text
+
+    {% load cms_helpers %}
+
+    {% page_titleextension 1 "extensionmodel" do_cache=False %}
+
 anylink extension for cms pages
 -------------------------------
 
