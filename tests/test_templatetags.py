@@ -12,7 +12,7 @@ from tests.resources.cmsapp.models import ExtensionModel
 @pytest.mark.django_db
 class TestPageTitleExtensionTemplateTag:
 
-    @pytest.fixture(autouse=True, scope="function")
+    @pytest.fixture(autouse=True, scope='function')
     def _django_clear_cache(self, settings):
         del(settings.CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE)
         cache.clear()
