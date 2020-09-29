@@ -3,6 +3,7 @@ from unittest import mock
 import pytest
 from cms.api import create_page, publish_page
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.template import Context, Template
 
 from tests.resources.cmsapp.models import ExtensionModel
@@ -10,6 +11,10 @@ from tests.resources.cmsapp.models import ExtensionModel
 
 @pytest.mark.django_db
 class TestPageTitleExtensionTemplateTag:
+
+    @pytest.fixture(autouse=True, scope="function")
+    def _django_clear_cache(self):
+        cache.clear()
 
     @mock.patch('cms_helpers.templatetags.cms_helpers.Page.objects.get')
     def test_no_cms(self, page_mock, rf):
@@ -93,7 +98,7 @@ class TestPageTitleExtensionTemplateTag:
         context = Context({'request': request})
         assert template.render(context) == 'draft'
 
-    def test_extension_found_performance(self, rf,  django_assert_num_queries):
+    def test_extension_found_performance(self, rf, django_assert_num_queries):
         request = rf.get('/')
         request.user = User.objects.create(username='admin', is_superuser=True)
 
@@ -117,6 +122,6 @@ class TestPageTitleExtensionTemplateTag:
         )
         with django_assert_num_queries(4, info=info):
             assert template.render(context) == 'public'
-        # Rendering another time should be faster / hit less the DB
-        with django_assert_num_queries(4, info=info):
+        # Rendering another time should be cached and not hit the DB
+        with django_assert_num_queries(0, info=info):
             assert template.render(context) == 'public'
