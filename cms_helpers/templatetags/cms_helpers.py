@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 register = template.Library()
 
 
+# TODO: add caching
 @register.simple_tag(takes_context=True)
 def page_titleextension(context, page_id, extension):
     try:

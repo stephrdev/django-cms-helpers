@@ -92,3 +92,31 @@ class TestPageTitleExtensionTemplateTag:
         ) % page.pk)
         context = Context({'request': request})
         assert template.render(context) == 'draft'
+
+    def test_extension_found_performance(self, rf,  django_assert_num_queries):
+        request = rf.get('/')
+        request.user = User.objects.create(username='admin', is_superuser=True)
+
+        page = create_page('Test Page', 'INHERIT', 'en-us')
+        publish_page(page, request.user, 'en-us')
+        page.refresh_from_db()
+
+        ExtensionModel.objects.create(
+            extended_object=page.get_public_object().get_title_obj(), name='public')
+        context = Context({'request': request})
+
+        template = Template((
+            '{%% load cms_helpers %%}'
+            '{%% page_titleextension %s "extensionmodel" %%}'
+        ) % page.pk)
+        info = (
+            '1 query get draft page, '
+            '1 query get public page, '
+            '1 query get title, '
+            '1 query get extension'
+        )
+        with django_assert_num_queries(4, info=info):
+            assert template.render(context) == 'public'
+        # Rendering another time should be faster / hit less the DB
+        with django_assert_num_queries(4, info=info):
+            assert template.render(context) == 'public'

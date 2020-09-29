@@ -4,6 +4,7 @@
 .DS_Store
 .coverage
 .cache
+.idea
 .pytest_cache
 .tox
 htmlcov/

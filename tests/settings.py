@@ -13,8 +13,6 @@ DATABASES = {
     }
 }
 
-MIDDLEWARE_CLASSES = []
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,11 +27,6 @@ INSTALLED_APPS = [
     'cms_helpers',
     'tests.resources.cmsapp',
 ]
-
-TEMPLATES = [{
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'APP_DIRS': True,
-}]
 
 SITE_ID = 1
 LANGUAGES = (('en-us', 'en-us'),)

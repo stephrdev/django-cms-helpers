@@ -22,6 +22,7 @@ class TitleExtensionToolbar(ExtensionToolbar):
         return position
 
     def populate(self):
+        # TODO: condense queries or cache
         current_page_menu = self._setup_extension_toolbar()
         if not current_page_menu or not self.page:
             return
