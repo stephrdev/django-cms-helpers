@@ -6,7 +6,7 @@ import factory
 from filer.models import Image
 
 
-class ImageFactory(factory.DjangoModelFactory):
+class ImageFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Image
 
