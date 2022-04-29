@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.0.0 (2022-04-29)
+------------------
+
+* Drop support for Django < 2.2
+* Drop support for django-cms < 3.7
+* Drop support for Python < 3.8
+* Add support for Django 3.2, django-cms 3.10
+
+
 0.3.0 (2020-09-29)
 ------------------
 

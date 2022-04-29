@@ -53,7 +53,7 @@ class TestTitleextensiontoolbarMultilingual:
         expected_url = '/admin/cmsapp/extensionmodel/add/?extended_object={0}'
 
         response = admin_client.get(
-            '{0}?edit=on'.format(page.get_absolute_url()))
+            '{0}?edit=on'.format(page.get_absolute_url('de')))
         toolbar = response.context['request'].toolbar
         menu = toolbar.get_menu('page')
         item = menu.items[5]
@@ -81,7 +81,7 @@ class TestTitleextensiontoolbarMultilingual:
         expected_url = '/admin/cmsapp/extensionmodel/{0}/change/'
 
         response = admin_client.get(
-            '{0}?edit=on'.format(page.get_absolute_url()))
+            '{0}?edit=on'.format(page.get_absolute_url('de')))
         toolbar = response.context['request'].toolbar
         menu = toolbar.get_menu('page')
         item = menu.items[5]
@@ -103,7 +103,7 @@ class TestTitleextensiontoolbarMultilingual:
         expected_url_change = '/admin/cmsapp/extensionmodel/{0}/change/'
 
         response = admin_client.get(
-            '{0}?edit=on'.format(page.get_absolute_url()))
+            '{0}?edit=on'.format(page.get_absolute_url('de')))
         toolbar = response.context['request'].toolbar
         menu = toolbar.get_menu('page')
         item = menu.items[5]
@@ -125,7 +125,7 @@ class TestTitleextensiontoolbarMultilingual:
         expected_url_change = '/admin/cmsapp/extensionmodel/{0}/change/'
 
         response = admin_client.get(
-            '{0}?edit=on'.format(page.get_absolute_url()))
+            '{0}?edit=on'.format(page.get_absolute_url('de')))
         toolbar = response.context['request'].toolbar
         menu = toolbar.get_menu('page')
         item = menu.items[5]
