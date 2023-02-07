@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.0.0 (2023-02-07)
+------------------
+
+* Add support for Django 4.1 and django-cms 3.11
+* Drop support for Django < 3.2
+* Drop support for django-cms < 3.9
+
+
 1.0.0 (2022-04-29)
 ------------------
 
