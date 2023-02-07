@@ -2,7 +2,7 @@ import os
 
 from django import forms
 from django.db import models
-from django.utils.translation import ugettext
+from django.utils.translation import gettext
 from filer.fields.file import AdminFileFormField as BaseAdminFileFormField
 from filer.fields.file import FilerFileField as BaseFilerFileField
 
@@ -23,13 +23,18 @@ class AdminFileFormField(BaseAdminFileFormField):
             extension = os.path.splitext(cleaned.file.name)[1].strip('.').lower()
             if extension not in self.extensions:
                 raise forms.ValidationError(
-                    ugettext('Invalid file extension, allowed extensions: {0}'.format(
-                        ', '.join(self.extensions))))
+                    gettext(
+                        'Invalid file extension, allowed extensions: {0}'.format(
+                            ', '.join(self.extensions)
+                        )
+                    )
+                )
 
         if self.alt_text_required:
             if hasattr(cleaned, 'default_alt_text') and not cleaned.default_alt_text:
                 raise forms.ValidationError(
-                    ugettext('Alternative text is missing for this file.'))
+                    gettext('Alternative text is missing for this file.')
+                )
 
         return cleaned
 

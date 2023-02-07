@@ -19,11 +19,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-
     'menus',
     'cms',
     'treebeard',
-
     'cms_helpers',
     'tests.resources.cmsapp',
 ]
@@ -68,6 +66,7 @@ MEDIA_URL = '/media/'
 
 try:
     import anylink  # noqa
+
     INSTALLED_APPS += ['anylink']
     ANYLINK_EXTENSIONS = (
         'anylink.extensions.ExternalLink',
@@ -78,11 +77,8 @@ except ImportError:
 
 try:
     import filer  # noqa
-    INSTALLED_APPS += [
-        'mptt',
-        'easy_thumbnails',
-        'filer'
-    ]
+
+    INSTALLED_APPS += ['mptt', 'easy_thumbnails', 'filer']
 except ImportError:
     pass
 

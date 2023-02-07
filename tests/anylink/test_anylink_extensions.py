@@ -13,7 +13,7 @@ from cms_helpers.anylink_extensions import CmsPageLink
 
 @pytest.mark.django_db
 class TestCmsPageLink:
-    def setup(self):
+    def setup_method(self):
         cache.clear()
         self.root = create_page('', 'INHERIT', 'en-us')
         self.page = create_page('Sub page', 'INHERIT', 'en-us', parent=self.root)
@@ -27,9 +27,11 @@ class TestCmsPageLink:
 
     def test_get_absolute_url_with_other_domain(self):
         second_site = Site.objects.create(
-            domain='second.domain.local', name='second.domain.local')
+            domain='second.domain.local', name='second.domain.local'
+        )
         second_site_page = create_page(
-            'Sub page 2', 'INHERIT', 'en-us', parent=self.root, site=second_site)
+            'Sub page 2', 'INHERIT', 'en-us', parent=self.root, site=second_site
+        )
         link = AnyLink(link_type='page', page=second_site_page)
 
         url = CmsPageLink().get_absolute_url(link)

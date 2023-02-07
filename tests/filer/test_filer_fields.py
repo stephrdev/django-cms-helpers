@@ -13,8 +13,7 @@ from .factories import ImageFactory
 @pytest.mark.django_db
 class TestAdminFileFormField:
     def test_super_not_clean(self):
-        field = AdminFileFormField(
-            mock.Mock(), Image.objects.all(), 'id', required=False)
+        field = AdminFileFormField(mock.Mock(), Image.objects.all(), 'id', required=False)
 
         assert field.clean('') is None
 
@@ -22,7 +21,8 @@ class TestAdminFileFormField:
         image = ImageFactory.create(default_alt_text=None)
 
         field = AdminFileFormField(
-            mock.Mock(), Image.objects.all(), 'id', alt_text_required=False)
+            mock.Mock(), Image.objects.all(), 'id', alt_text_required=False
+        )
         assert isinstance(field.clean(str(image.pk)), Image)
 
     def test_without_alt_text_enabled(self):
@@ -43,8 +43,7 @@ class TestAdminFileFormField:
     def test_extensions_invalid_disabled(self):
         image = ImageFactory.create(default_alt_text='Test')
 
-        field = AdminFileFormField(
-            mock.Mock(), Image.objects.all(), 'id')
+        field = AdminFileFormField(mock.Mock(), Image.objects.all(), 'id')
 
         assert isinstance(field.clean(str(image.pk)), Image)
 
@@ -52,7 +51,8 @@ class TestAdminFileFormField:
         image = ImageFactory.create(default_alt_text='Test')
 
         field = AdminFileFormField(
-            mock.Mock(), Image.objects.all(), 'id', extensions=['jpg', 'gif'])
+            mock.Mock(), Image.objects.all(), 'id', extensions=['jpg', 'gif']
+        )
 
         assert isinstance(field.clean(str(image.pk)), Image)
 
@@ -60,15 +60,14 @@ class TestAdminFileFormField:
         image = ImageFactory.create(default_alt_text='Test')
 
         field = AdminFileFormField(
-            mock.Mock(), Image.objects.all(), 'id', extensions=['png', 'gif'])
+            mock.Mock(), Image.objects.all(), 'id', extensions=['png', 'gif']
+        )
 
         with pytest.raises(forms.ValidationError):
             field.clean(str(image.pk))
 
 
-@pytest.mark.filer
 class TestFilerFileField:
-
     def test_formfield(self):
         form_class = forms.models.modelform_factory(FileModel, fields='__all__')
         assert isinstance(form_class().fields['file1'], AdminFileFormField)

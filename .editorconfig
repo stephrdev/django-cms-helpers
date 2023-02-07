@@ -16,6 +16,7 @@ indent_size = 4
 line_length = 96
 multi_line_output = 4
 lines_after_imports = 2
+known_third_party = django,anylink,filer
 
 [*.rst]
 indent_style = space

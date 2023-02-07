@@ -10,8 +10,7 @@ class ImageFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Image
 
-    file = factory.django.ImageField(
-        filename='image.jpg', color='orange', width=100, height=50)
+    file = factory.django.ImageField(filename='image.jpg', color='orange', width=100, height=50)
     default_alt_text = factory.Sequence(lambda n: 'alt text {0}'.format(n))
 
     @classmethod

@@ -5,16 +5,17 @@ django-cms-helpers
    :target: https://pypi.org/project/django-cms-helpers/
    :alt: Latest Version
 
-.. image:: https://codecov.io/gh/moccu/django-cms-helpers/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/moccu/django-cms-helpers
+.. image:: https://github.com/stephrdev/django-cms-helpers/workflows/Test/badge.svg?branch=master
+   :target: https://github.com/stephrdev/django-cms-helpers/actions?workflow=Test
+   :alt: CI Status
+
+.. image:: https://codecov.io/gh/stephrdev/django-cms-helpers/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/stephrdev/django-cms-helpers
    :alt: Coverage Status
 
 .. image:: https://readthedocs.org/projects/django-cms-helpers/badge/?version=latest
    :target: https://django-cms-helpers.readthedocs.io/en/stable/?badge=latest
    :alt: Documentation Status
-
-.. image:: https://travis-ci.org/moccu/django-cms-helpers.svg?branch=master
-   :target: https://travis-ci.org/moccu/django-cms-helpers
 
 
 django-cms-helpers is a collection of helpers when working with django-cms.
@@ -31,31 +32,29 @@ Features
 Requirements
 ------------
 
-django-cms-helpers supports Python 3 only and requires at least Django 1.11 and django-cms at least 3.4.
+django-cms-helpers supports Python 3 only and requires at least Django 3.2 and django-cms 3.9.
 
 
 Prepare for development
 -----------------------
 
-A Python 3.6 interpreter is required in addition to pipenv.
+A Python 3.8+ interpreter is required in addition to poetry.
 
 .. code-block:: shell
 
-    $ pipenv install --python 3.6 --dev
-    $ pipenv shell
-    $ pip install -e .
+    $ poetry install
 
 
 Now you're ready to run the tests:
 
 .. code-block:: shell
 
-    $ pipenv run py.test
+    $ poetry run py.test
 
 
 Resources
 ---------
 
 * `Documentation <https://django-cms-helpers.readthedocs.io>`_
-* `Bug Tracker <https://github.com/moccu/django-cms-helpers/issues>`_
-* `Code <https://github.com/moccu/django-cms-helpers/>`_
+* `Bug Tracker <https://github.com/stephrdev/django-cms-helpers/issues>`_
+* `Code <https://github.com/stephrdev/django-cms-helpers/>`_

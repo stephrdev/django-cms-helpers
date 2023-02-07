@@ -1,4 +1,0 @@
-Django>=2.2,<2.3
-django-cms>=3.7,<3.8
-django-anylink>=1.0<1.1
-django-filer>=2.0,<2.1
