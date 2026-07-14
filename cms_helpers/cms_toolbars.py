@@ -4,7 +4,7 @@ from django.utils.encoding import force_str
 from django.utils.translation import get_language_info
 
 
-class TitleExtensionToolbar(ExtensionToolbar):
+class PageContentExtensionToolbar(ExtensionToolbar):
     model = None
     insert_after = None
 
@@ -29,14 +29,14 @@ class TitleExtensionToolbar(ExtensionToolbar):
         languages = get_language_list(self.current_site.pk)
         is_single_lang = len(languages) < 2
         position = self.get_item_position(current_page_menu)
-        urls = self.get_title_extension_admin()
         page = self._get_page()
-        titleset = page.title_set.filter(language__in=languages)
+        page_contents = (
+            page.pagecontent_set(manager='admin_manager')
+            .latest_content()
+            .filter(language__in=languages)
+        )
 
-        if hasattr(self.toolbar, 'edit_mode_active'):
-            not_edit_mode = not self.toolbar.edit_mode_active
-        else:
-            not_edit_mode = not self.toolbar.edit_mode
+        not_edit_mode = not self.toolbar.edit_mode_active
 
         extended_menu = (
             current_page_menu
@@ -51,14 +51,13 @@ class TitleExtensionToolbar(ExtensionToolbar):
             )
         )
 
-        nodes = [
-            (title_extension, url, title)
-            for ((title_extension, url), title) in zip(urls, titleset)
-        ]
+        for page_content in page_contents:
+            _, url = self.get_page_content_extension_admin(page_content)
+            if not url:
+                continue
 
-        for title_extension, url, title in nodes:
             item_position = position if is_single_lang else None
-            language_str = get_language_info(title.language)['name_translated']
+            language_str = get_language_info(page_content.language)['name_translated']
             name = '{0}{1}'.format(
                 '' if is_single_lang else (language_str + ' '), self.model._meta.verbose_name
             )

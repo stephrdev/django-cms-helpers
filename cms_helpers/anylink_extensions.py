@@ -16,7 +16,14 @@ class CmsPageLink(BaseLink):
     provided_fields = ('page', 'anchor')
 
     def configure_model(self, model):
-        model.add_to_class(self.get_name(), PageField(blank=True, null=True))
+        model.add_to_class(
+            self.get_name(),
+            PageField(
+                blank=True,
+                null=True,
+                related_name='%(app_label)s_%(class)s_page_set',
+            ),
+        )
         model.add_to_class('anchor', models.CharField(max_length=256, null=True, blank=True))
 
     def get_absolute_url(self, link):

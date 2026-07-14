@@ -1,59 +1,59 @@
 from unittest import mock
 
 import pytest
-from cms.api import create_page, publish_page
+from cms.api import create_page
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.template import Context, Template
+from djangocms_versioning.helpers import (
+    get_latest_admin_viewable_content,
+    get_version_for_content,
+)
 
 from tests.resources.cmsapp.models import ExtensionModel
 
 
+def _publish(page, user, language='en-us'):
+    content = get_latest_admin_viewable_content(page, language=language)
+    version = get_version_for_content(content)
+    version.publish(user)
+    return content
+
+
 @pytest.mark.django_db
-class TestPageTitleExtensionTemplateTag:
+class TestPageContentExtensionTemplateTag:
     @pytest.fixture(autouse=True, scope='function')
     def _django_clear_cache(self, settings):
-        del settings.CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE
+        del settings.CMS_HELPERS_PAGE_CONTENT_EXTENSION_CACHE
         cache.clear()
-
-    @mock.patch('cms_helpers.templatetags.cms_helpers.Page.objects.get')
-    def test_no_cms(self, page_mock, rf):
-        page_mock.side_effect = NameError
-        template = Template(
-            '{% load cms_helpers %}{% page_titleextension 1 "extensionmodel" %}'
-        )
-        context = Context({'request': rf.get('/')})
-        with pytest.raises(ImportError):
-            assert template.render(context) == ''
 
     def test_page_not_found(self, rf):
         template = Template(
-            '{% load cms_helpers %}{% page_titleextension 1 "extensionmodel" %}'
+            '{% load cms_helpers %}{% page_content_extension 1 "extensionmodel" %}'
         )
         context = Context({'request': rf.get('/')})
         assert template.render(context) == 'None'
 
-    def test_no_page(self, rf):
+    def test_no_page_content(self, rf):
         request = rf.get('/')
-        request.user = User()
-        page = create_page('Test Page', 'INHERIT', 'en-us')
+        user = User.objects.create(username='creator', is_staff=True, is_superuser=True)
+        page = create_page('Test Page', 'INHERIT', 'en-us', created_by=user)
         template = Template(
-            ('{%% load cms_helpers %%}' '{%% page_titleextension %s "extensionmodel" %%}')
+            ('{%% load cms_helpers %%}{%% page_content_extension %s "extensionmodel" %%}')
             % page.pk
         )
         context = Context({'request': request})
+        # Page has a draft but nothing published yet, and this request is not editing.
         assert template.render(context) == 'None'
 
     def test_extension_not_found(self, rf):
         request = rf.get('/')
-        request.user = User.objects.create(username='admin', is_superuser=True)
-
-        page = create_page('Test Page', 'INHERIT', 'en-us')
-        publish_page(page, request.user, 'en-us')
-        page.refresh_from_db()
+        user = User.objects.create(username='creator', is_staff=True, is_superuser=True)
+        page = create_page('Test Page', 'INHERIT', 'en-us', created_by=user)
+        _publish(page, user)
 
         template = Template(
-            ('{%% load cms_helpers %%}' '{%% page_titleextension %s "extensionmodel" %%}')
+            ('{%% load cms_helpers %%}{%% page_content_extension %s "extensionmodel" %%}')
             % page.pk
         )
         context = Context({'request': request})
@@ -61,21 +61,16 @@ class TestPageTitleExtensionTemplateTag:
 
     def test_extension_found_public(self, rf):
         request = rf.get('/')
-        request.user = User.objects.create(username='admin', is_superuser=True)
+        user = User.objects.create(username='creator', is_staff=True, is_superuser=True)
+        page = create_page('Test Page', 'INHERIT', 'en-us', created_by=user)
+        published_content = _publish(page, user)
+        draft_version = get_version_for_content(published_content).copy(created_by=user)
 
-        page = create_page('Test Page', 'INHERIT', 'en-us')
-        publish_page(page, request.user, 'en-us')
-        page.refresh_from_db()
-
-        ExtensionModel.objects.create(
-            extended_object=page.get_public_object().get_title_obj(), name='public'
-        )
-        ExtensionModel.objects.create(
-            extended_object=page.get_draft_object().get_title_obj(), name='draft'
-        )
+        ExtensionModel.objects.create(extended_object=published_content, name='public')
+        ExtensionModel.objects.create(extended_object=draft_version.content, name='draft')
 
         template = Template(
-            ('{%% load cms_helpers %%}' '{%% page_titleextension %s "extensionmodel" %%}')
+            ('{%% load cms_helpers %%}{%% page_content_extension %s "extensionmodel" %%}')
             % page.pk
         )
         context = Context({'request': request})
@@ -83,22 +78,17 @@ class TestPageTitleExtensionTemplateTag:
 
     def test_extension_found_draft(self, rf):
         request = rf.get('/')
-        request.user = User.objects.create(username='admin', is_staff=True, is_superuser=True)
-        request.session = {'cms_edit': True}
+        request.toolbar = mock.Mock(edit_mode_active=True, preview_mode_active=False)
+        user = User.objects.create(username='creator', is_staff=True, is_superuser=True)
+        page = create_page('Test Page', 'INHERIT', 'en-us', created_by=user)
+        published_content = _publish(page, user)
+        draft_version = get_version_for_content(published_content).copy(created_by=user)
 
-        page = create_page('Test Page', 'INHERIT', 'en-us')
-        publish_page(page, request.user, 'en-us')
-        page.refresh_from_db()
-
-        ExtensionModel.objects.create(
-            extended_object=page.get_public_object().get_title_obj(), name='public'
-        )
-        ExtensionModel.objects.create(
-            extended_object=page.get_draft_object().get_title_obj(), name='draft'
-        )
+        ExtensionModel.objects.create(extended_object=published_content, name='public')
+        ExtensionModel.objects.create(extended_object=draft_version.content, name='draft')
 
         template = Template(
-            ('{%% load cms_helpers %%}' '{%% page_titleextension %s "extensionmodel" %%}')
+            ('{%% load cms_helpers %%}{%% page_content_extension %s "extensionmodel" %%}')
             % page.pk
         )
         context = Context({'request': request})
@@ -106,31 +96,21 @@ class TestPageTitleExtensionTemplateTag:
 
     def test_extension_found_performance(self, rf, django_assert_num_queries):
         request = rf.get('/')
-        request.user = User.objects.create(username='admin', is_superuser=True)
+        user = User.objects.create(username='creator', is_staff=True, is_superuser=True)
+        page = create_page('Test Page', 'INHERIT', 'en-us', created_by=user)
+        published_content = _publish(page, user)
 
-        page = create_page('Test Page', 'INHERIT', 'en-us')
-        publish_page(page, request.user, 'en-us')
-        page.refresh_from_db()
-
-        ExtensionModel.objects.create(
-            extended_object=page.get_public_object().get_title_obj(), name='public'
-        )
+        ExtensionModel.objects.create(extended_object=published_content, name='public')
         context = Context({'request': request})
 
         template = Template(
-            ('{%% load cms_helpers %%}' '{%% page_titleextension %s "extensionmodel" %%}')
+            ('{%% load cms_helpers %%}{%% page_content_extension %s "extensionmodel" %%}')
             % page.pk
         )
-        info = (
-            '1 query get draft page, '
-            '1 query get public page, '
-            '1 query get title, '
-            '1 query get extension'
-        )
-        with django_assert_num_queries(4, info=info):
+        with django_assert_num_queries(3):
             assert template.render(context) == 'public'
         # Rendering another time should be cached and not hit the DB
-        with django_assert_num_queries(0, info=info):
+        with django_assert_num_queries(0):
             assert template.render(context) == 'public'
 
     @pytest.mark.parametrize(
@@ -161,21 +141,17 @@ class TestPageTitleExtensionTemplateTag:
         if cms_plugin_cache is not None:
             settings.CMS_PLUGIN_CACHE = cms_plugin_cache
         if cms_helper_cache is not None:
-            settings.CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE = cms_helper_cache
+            settings.CMS_HELPERS_PAGE_CONTENT_EXTENSION_CACHE = cms_helper_cache
         request = rf.get('/')
-        request.user = User.objects.create(username='admin', is_superuser=True)
+        user = User.objects.create(username='creator', is_staff=True, is_superuser=True)
+        page = create_page('Test Page', 'INHERIT', 'en-us', created_by=user)
+        published_content = _publish(page, user)
 
-        page = create_page('Test Page', 'INHERIT', 'en-us')
-        publish_page(page, request.user, 'en-us')
-        page.refresh_from_db()
-
-        ExtensionModel.objects.create(
-            extended_object=page.get_public_object().get_title_obj(), name='public'
-        )
+        ExtensionModel.objects.create(extended_object=published_content, name='public')
         context = Context({'request': request})
 
         template = Template(
-            ('{%% load cms_helpers %%}' '{%% page_titleextension %s "extensionmodel" %s %%}')
+            ('{%% load cms_helpers %%}{%% page_content_extension %s "extensionmodel" %s %%}')
             % (page.pk, template_tag_cache_info)
         )
         assert template.render(context) == 'public'

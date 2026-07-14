@@ -5,6 +5,11 @@ import tempfile
 DEBUG = True
 
 SECRET_KEY = 'test'
+USE_TZ = True
+
+# This is a from-scratch test database, not an existing django CMS 3 project
+# being migrated, so confirming version 4 here is safe.
+CMS_CONFIRM_VERSION4 = True
 
 DATABASES = {
     'default': {
@@ -21,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'menus',
     'cms',
+    'djangocms_versioning',
     'treebeard',
     'cms_helpers',
     'tests.resources.cmsapp',
@@ -78,8 +84,8 @@ except ImportError:
 try:
     import filer  # noqa
 
-    INSTALLED_APPS += ['mptt', 'easy_thumbnails', 'filer']
+    INSTALLED_APPS += ['easy_thumbnails', 'filer']
 except ImportError:
     pass
 
-CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE = True
+CMS_HELPERS_PAGE_CONTENT_EXTENSION_CACHE = True

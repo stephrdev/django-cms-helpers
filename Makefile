@@ -6,8 +6,12 @@ clean:
 	poetry run make -C docs clean
 
 correct:
-	poetry run isort cms_helpers tests
-	poetry run black -q cms_helpers tests
+	poetry run ruff check --fix cms_helpers tests
+	poetry run ruff format cms_helpers tests
+
+lint:
+	poetry run ruff check cms_helpers tests
+	poetry run ruff format --check cms_helpers tests
 
 docs:
 	poetry run make -C docs html
@@ -22,7 +26,7 @@ tests_filer:
 	@PYTHONPATH=$(CURDIR):${PYTHONPATH} poetry run pytest --ignore=tests/anylink
 
 tests:
-	@PYTHONPATH=$(CURDIR):${PYTHONPATH} poetry run pytest --cov --isort --flake8 --black
+	@PYTHONPATH=$(CURDIR):${PYTHONPATH} poetry run pytest --cov
 
 coverage-html: tests
 	poetry run coverage html

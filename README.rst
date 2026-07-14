@@ -32,13 +32,14 @@ Features
 Requirements
 ------------
 
-django-cms-helpers supports Python 3 only and requires at least Django 3.2 and django-cms 3.9.
+django-cms-helpers supports Python 3 only and requires at least Django 4.2, django CMS 4.1
+and djangocms-versioning 2.0. For django CMS 3.x support, use the 2.x release series.
 
 
 Prepare for development
 -----------------------
 
-A Python 3.8+ interpreter is required in addition to poetry.
+A Python 3.10+ interpreter is required in addition to poetry.
 
 .. code-block:: shell
 

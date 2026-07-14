@@ -7,6 +7,7 @@ Contents:
 
    installation
    usage
+   migration
    changelog
 
 Api documentation:

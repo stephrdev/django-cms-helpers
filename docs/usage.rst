@@ -1,24 +1,26 @@
 Usage
 =====
 
-page_titleextension templatetag
--------------------------------
+page_content_extension templatetag
+-----------------------------------
 
-To obtain cms page title extension object in template use
-page_titleextension templatetag. The tag requires cms page id
-and name of extension model.
+To obtain a page content extension object in a template use the
+page_content_extension templatetag. The tag requires the cms page id
+and the name of the extension model. It shows the draft version of the
+extension while editing/previewing the page in the toolbar (requiring
+``djangocms-versioning``), and the published version otherwise.
 
 
 .. code-block:: text
 
     {% load cms_helpers %}
 
-    {% page_titleextension 1 "extensionmodel" %}
+    {% page_content_extension 1 "extensionmodel" %}
 
 
-The page_titleextension templatetag is cached by default if
+The page_content_extension templatetag is cached by default if
 `CMS_PLUGIN_CACHE` is True, which is the default. You can override
-globally by setting `CMS_HELPERS_PAGE_TITLEEXTENSION_CACHE = False`.
+globally by setting `CMS_HELPERS_PAGE_CONTENT_EXTENSION_CACHE = False`.
 You can also override locally the template tag using the `do_cache`
 keyword argument.
 
@@ -27,7 +29,7 @@ keyword argument.
 
     {% load cms_helpers %}
 
-    {% page_titleextension 1 "extensionmodel" do_cache=False %}
+    {% page_content_extension 1 "extensionmodel" do_cache=False %}
 
 anylink extension for cms pages
 -------------------------------
@@ -46,24 +48,24 @@ can be found `here <https://django-anylink.readthedocs.io/en/latest/>`_.
    )
 
 
-cms title extension toolbar
----------------------------
+cms page content extension toolbar
+-----------------------------------
 
-TitleExtensionToolbar provides boilerplate code for your ExtensionToolbar model.
+PageContentExtensionToolbar provides boilerplate code for your ExtensionToolbar model.
 It includes populate function and enables setting the position
 of the extension in the menu through insert_after parameter.
 
 
 .. code-block:: python
 
-    from cms.extensions import TitleExtension
+    from cms.extensions import PageContentExtension
     from cms.extensions.extension_pool import extension_pool
     from cms.toolbar_pool import toolbar_pool
-    from cms_helpers.cms_toolbars import TitleExtensionToolbar
+    from cms_helpers.cms_toolbars import PageContentExtensionToolbar
 
 
     @extension_pool.register
-    class YourExtensionModel(TitleExtension):
+    class YourExtensionModel(PageContentExtension):
         name = models.CharField(max_length=255)
 
         class Meta:
@@ -71,7 +73,7 @@ of the extension in the menu through insert_after parameter.
 
 
     @toolbar_pool.register
-    class ExtensionToolbar(TitleExtensionToolbar):
+    class ExtensionToolbar(PageContentExtensionToolbar):
         model = YourExtensionModel
         insert_after = 'Advanced settings'
 

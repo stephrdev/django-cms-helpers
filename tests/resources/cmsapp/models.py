@@ -1,4 +1,4 @@
-from cms.extensions import TitleExtension
+from cms.extensions import PageContentExtension
 from cms.extensions.extension_pool import extension_pool
 from django.db import models
 
@@ -10,7 +10,7 @@ except ImportError:
 
 
 @extension_pool.register
-class ExtensionModel(TitleExtension):
+class ExtensionModel(PageContentExtension):
     name = models.CharField(max_length=255)
 
     class Meta:

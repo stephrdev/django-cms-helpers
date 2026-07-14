@@ -34,7 +34,6 @@ Installation
 
     INSTALLED_APPS = (
         # ...
-        'mptt',
         'easy_thumbnails',
         'filer'
     )

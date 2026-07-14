@@ -5,6 +5,7 @@ from unittest import mock
 import pytest
 from anylink.models import AnyLink
 from cms.api import create_page
+from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 
@@ -15,8 +16,11 @@ from cms_helpers.anylink_extensions import CmsPageLink
 class TestCmsPageLink:
     def setup_method(self):
         cache.clear()
-        self.root = create_page('', 'INHERIT', 'en-us')
-        self.page = create_page('Sub page', 'INHERIT', 'en-us', parent=self.root)
+        self.user = User.objects.create(username='creator', is_staff=True, is_superuser=True)
+        self.root = create_page('', 'INHERIT', 'en-us', created_by=self.user)
+        self.page = create_page(
+            'Sub page', 'INHERIT', 'en-us', parent=self.root, created_by=self.user
+        )
 
     def test_get_absolute_url(self):
         link = AnyLink(link_type='page', page=self.page)
@@ -30,7 +34,12 @@ class TestCmsPageLink:
             domain='second.domain.local', name='second.domain.local'
         )
         second_site_page = create_page(
-            'Sub page 2', 'INHERIT', 'en-us', parent=self.root, site=second_site
+            'Sub page 2',
+            'INHERIT',
+            'en-us',
+            parent=self.root,
+            site=second_site,
+            created_by=self.user,
         )
         link = AnyLink(link_type='page', page=second_site_page)
 
